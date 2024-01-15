@@ -60,14 +60,11 @@ function movePlayer(targetCell) {
         const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
         if (!barrierInBetween) {
             targetCell.appendChild(currentPlayer);
-
-            // Vérifier la condition de victoire
             if (currentPlayer === player1 && targetX === 16) {
                 endGame('Le joueur 1 a gagné!');
             } else if (currentPlayer === player2 && targetX === 0) {
                 endGame('Le joueur 2 a gagné!');
             }
-
             turn();
         }
     }
@@ -117,6 +114,7 @@ function toggleBarrier(cell, cell2, cell3) {
             barrier3.className = 'barrier';
             cell3.appendChild(barrier3);
         }
+        turn();
     }
 }
 
