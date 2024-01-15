@@ -1,0 +1,76 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(17, 38px);
+    grid-template-rows: repeat(17, 38px);
+    grid-gap: 1px;
+}
+
+.cell {
+    width: 38px;
+    height: 38px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.player {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.player1 {
+    background-color: blue;
+}
+
+.player2 {
+    background-color: red;
+}
+
+.barrier {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.5;
+    position: absolute;
+}
+
+.cell.player-cell {
+    background-color: #c0e4fc;
+}
+
+.cell.barrier-cell {
+    border: none;
+}
+
+#message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    background-color: white;
+    padding: 20px;
+    border: 2px solid black;
+    z-index: 1;
+    display: none;
+}
+
+#message.visible {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
