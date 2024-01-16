@@ -26,7 +26,7 @@ for (let i = 0; i < 17; i++) {
                 } else if (j % 2 === 0 && i % 2 !== 0) {
                     if (j === 16)
                         toggleBarrier(document.getElementById(`cell-${i}-${j - 2}`), document.getElementById(`cell-${i}-${j - 1}`), cell, false);
-                else
+                    else
                         toggleBarrier(cell, document.getElementById(`cell-${i}-${j + 1}`), document.getElementById(`cell-${i}-${j + 2}`), false);
                 }
             });
@@ -56,7 +56,7 @@ function movePlayer(targetCell) {
     const targetCellId = targetCell.id;
     const [x, y] = playerCellId.split('-').slice(1).map(Number);
     const [targetX, targetY] = targetCellId.split('-').slice(1).map(Number);
-    const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
+        const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
     const jumpedPlayer = getJumpedPlayer(playerCellId, targetCellId);
 
     if ((((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) && !barrierInBetween)
@@ -76,9 +76,9 @@ function movePlayer(targetCell) {
 
             updatePathLength();
             turn();
-    }
+        }
 
-}
+    }
 
 function checkBarriersBetween(cellId1, cellId2) {
     const [x1, y1] = cellId1.split('-').slice(1).map(Number);
@@ -166,17 +166,47 @@ function calculateShortestPath(startCell, targetRow) {
     return [];
 }
 
+function isAPlayableCell(cell) {
+    if(cell.classList.contains('player-cell')) {
+        return true;
+    }
+    print("Cette cellule n'est pas une case mais un bord");
+    return false;
+}
+
+
 function getNeighbors(cell) {
     const [x, y] = cell.id.split('-').slice(1).map(Number);
+    if(!isAPlayableCell(cell)) {
+        return null;
+    }
     const neighbors = [];
 
-    if (x > 0) neighbors.push(document.getElementById(`cell-${x - 1}-${y}`));
-    if (x < 16) neighbors.push(document.getElementById(`cell-${x + 1}-${y}`));
-    if (y > 0) neighbors.push(document.getElementById(`cell-${x}-${y - 1}`));
-    if (y < 16) neighbors.push(document.getElementById(`cell-${x}-${y + 1}`));
-
-    return neighbors;
-}
+    if (x > 0) {
+        const neighborCell = document.getElementById(`cell-${x - 2}-${y}`);
+        if(!checkBarriersBetween(cell, neighborCell)) {
+            neighbors.push(document.getElementById(neighborCell));
+        }
+    }
+    if (x < 16) {
+        const neighborCell = document.getElementById(`cell-${x + 2}-${y}`);
+        if(!checkBarriersBetween(cell, neighborCell)) {
+            neighbors.push(document.getElementById(neighborCell));
+        }
+    }
+    if (y > 0) {
+        const neighborCell = document.getElementById(`cell-${x}-${y - 2}`);
+        if(!checkBarriersBetween(cell, neighborCell)) {
+            neighbors.push(document.getElementById(neighborCell));
+        }
+    }
+    if (y < 16) {
+        const neighborCell = document.getElementById(`cell-${x}-${y + 2}`);
+        if(!checkBarriersBetween(cell, neighborCell)) {
+            neighbors.push(document.getElementById(neighborCell));
+        }
+    }
+}    
 
 function toggleBarrier(cell, cell2, cell3, isVertical) {
     if (!cell.querySelector('.barrier') && (!cell2.querySelector('.barrier') || !cell2) && (!cell3.querySelector('.barrier') || !cell3)) {
