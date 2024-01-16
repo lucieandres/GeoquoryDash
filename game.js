@@ -20,14 +20,14 @@ for (let i = 0; i < 17; i++) {
                 event.preventDefault();
                 if (i % 2 === 0 && j % 2 !== 0) {
                     if (i === 16)
-                        toggleBarrier(cell, document.getElementById(`cell-${i - 1}-${j}`), document.getElementById(`cell-${i - 2}-${j}`));
+                        toggleBarrier(cell, document.getElementById(`cell-${i - 1}-${j}`), document.getElementById(`cell-${i - 2}-${j}`), true);
                     else
-                        toggleBarrier(cell, document.getElementById(`cell-${i + 1}-${j}`), document.getElementById(`cell-${i + 2}-${j}`));
+                        toggleBarrier(cell, document.getElementById(`cell-${i + 1}-${j}`), document.getElementById(`cell-${i + 2}-${j}`), true);
                 } else if (j % 2 === 0 && i % 2 !== 0) {
                     if (j === 16)
-                        toggleBarrier(cell, document.getElementById(`cell-${i}-${j - 1}`), document.getElementById(`cell-${i}-${j - 2}`));
-                    else
-                        toggleBarrier(cell, document.getElementById(`cell-${i}-${j + 1}`), document.getElementById(`cell-${i}-${j + 2}`));
+                        toggleBarrier(document.getElementById(`cell-${i}-${j - 2}`), document.getElementById(`cell-${i}-${j - 1}`), cell, false);
+                else
+                        toggleBarrier(cell, document.getElementById(`cell-${i}-${j + 1}`), document.getElementById(`cell-${i}-${j + 2}`), false);
                 }
             });
         }
@@ -46,7 +46,6 @@ player2Cell.appendChild(player2);
 function createPlayer(className, bgColor) {
     const player = document.createElement('div');
     player.className = `player ${className}`;
-    player.style.backgroundColor = bgColor;
     return player;
 }
 
@@ -161,19 +160,55 @@ function checkBarriersBetween(cellId1, cellId2) {
     return false;
 }
 
-function toggleBarrier(cell, cell2, cell3) {
+function toggleBarrier(cell, cell2, cell3, isVertical) {
     if (!cell.querySelector('.barrier') && (!cell2.querySelector('.barrier') || !cell2) && (!cell3.querySelector('.barrier') || !cell3)) {
         const barrier = document.createElement('div');
         barrier.className = 'barrier';
+        if (isVertical) {
+            barrier.style.height = '100%';
+            barrier.style.width = '80%';
+            barrier.style.backgroundImage = 'url("img/BarriereVerticale.png")';
+            barrier.style.backgroundPosition = 'top'; 
+        }
+        else {
+            barrier.style.height = '80%';
+            barrier.style.width = '100%';
+            barrier.style.backgroundImage = 'url("img/Barriere.png")';
+            barrier.style.backgroundPosition = 'left';
+        }
         cell.appendChild(barrier);
         if (cell2) {
             const barrier2 = document.createElement('div');
             barrier2.className = 'barrier';
+            if (isVertical) {
+                barrier2.style.height = '100%';
+                barrier2.style.width = '80%';
+                barrier2.style.backgroundImage = 'url("img/BarriereVerticale.png")';
+                barrier2.style.backgroundPosition = 'center';
+            }
+            else {
+                barrier2.style.height = '80%';
+                barrier2.style.width = '100%';
+                barrier2.style.backgroundImage = 'url("img/Barriere.png")';
+                barrier2.style.backgroundPosition = 'center';
+            }
             cell2.appendChild(barrier2);
         }
         if (cell3) {
             const barrier3 = document.createElement('div');
             barrier3.className = 'barrier';
+            if (isVertical) {
+                barrier3.style.height = '100%';
+                barrier3.style.width = '80%';
+                barrier3.style.backgroundImage = 'url("img/BarriereVerticale.png")';
+                barrier3.style.backgroundPosition = 'bottom';
+            }
+            else {
+                barrier3.style.height = '80%';
+                barrier3.style.width = '100%';
+                barrier3.style.backgroundImage = 'url("img/Barriere.png")';
+                barrier3.style.backgroundPosition = 'right';
+            }  
             cell3.appendChild(barrier3);
         }
 
