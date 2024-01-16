@@ -57,11 +57,11 @@ function movePlayer(targetCell) {
     const targetCellId = targetCell.id;
     const [x, y] = playerCellId.split('-').slice(1).map(Number);
     const [targetX, targetY] = targetCellId.split('-').slice(1).map(Number);
+    const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
+    const jumpedPlayer = getJumpedPlayer(playerCellId, targetCellId);
 
-    if ((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) {
-        const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
-
-        if (!barrierInBetween) {
+    if ((((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) && !barrierInBetween)
+        || ((Math.abs(targetX - x) === 4 && targetY === y) && jumpedPlayer)) {
             targetCell.appendChild(currentPlayer);
             if (currentPlayer === player1 && targetX === 16) {
                 endGame('Le joueur 1 a gagné!');
@@ -77,26 +77,6 @@ function movePlayer(targetCell) {
 
             updatePathLength();
             turn();
-        }
-    } else if (Math.abs(targetX - x) === 4 && targetY === y) {
-        const jumpedPlayer = getJumpedPlayer(playerCellId, targetCellId);
-        if (jumpedPlayer) {
-            targetCell.appendChild(currentPlayer);
-            if (currentPlayer === player1 && targetX === 16) {
-                endGame('Le joueur 1 a gagné!');
-            } else if (currentPlayer === player2 && targetX === 0) {
-                endGame('Le joueur 2 a gagné!');
-            }
-
-            if (currentPlayer === player1) {
-                player1Path = calculateShortestPath(targetCell, 16);
-            } else {
-                player2Path = calculateShortestPath(targetCell, 0);
-            }
-
-            updatePathLength();
-            turn();
-        }
     }
 
 }
