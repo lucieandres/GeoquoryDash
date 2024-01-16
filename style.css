@@ -18,7 +18,7 @@ body {
 
 .board {
     display: grid;
-    grid-template: repeat(8, 7vh 4vh) 7vh / repeat(8, 7vh 4vh) 7vh;
+    grid-template: repeat(8, 7vh 2vh) 7vh / repeat(8, 7vh 2vh) 7vh;
 }
 
 .cell {
