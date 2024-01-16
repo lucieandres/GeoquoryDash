@@ -56,10 +56,11 @@ function movePlayer(targetCell) {
     const targetCellId = targetCell.id;
     const [x, y] = playerCellId.split('-').slice(1).map(Number);
     const [targetX, targetY] = targetCellId.split('-').slice(1).map(Number);
+    const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
+    const jumpedPlayer = getJumpedPlayer(playerCellId, targetCellId);
 
-    if ((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) {
-        const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
-        if (!barrierInBetween) {
+    if ((((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) && !barrierInBetween)
+        || ((Math.abs(targetX - x) === 4 && targetY === y) && jumpedPlayer)) {
             targetCell.appendChild(currentPlayer);
             if (currentPlayer === player1 && targetX === 16) {
                 endGame('Le joueur 1 a gagné!');
@@ -75,8 +76,55 @@ function movePlayer(targetCell) {
 
             updatePathLength();
             turn();
+    }
+
+}
+
+function checkBarriersBetween(cellId1, cellId2) {
+    const [x1, y1] = cellId1.split('-').slice(1).map(Number);
+    const [x2, y2] = cellId2.split('-').slice(1).map(Number);
+
+    if (x1 === x2) {
+        const minY = Math.min(y1, y2);
+        const maxY = Math.max(y1, y2);
+        for (let y = minY + 1; y < maxY; y += 2) {
+            const cell = document.getElementById(`cell-${x1}-${y}`);
+            if (cell.querySelector('.barrier') && cell) {
+                return true;
+            }
         }
     }
+
+    if (y1 === y2) {
+        const minX = Math.min(x1, x2);
+        const maxX = Math.max(x1, x2);
+        for (let x = minX + 1; x < maxX; x += 2) {
+            const cell = document.getElementById(`cell-${x}-${y1}`);
+            if (cell.querySelector('.barrier') && cell) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function getJumpedPlayer(startCellId, targetCellId) {
+    const [startX, startY] = startCellId.split('-').slice(1).map(Number);
+    const [targetX, targetY] = targetCellId.split('-').slice(1).map(Number);
+
+    const jumpedX = startX + (targetX - startX) / 2;
+    const jumpedY = startY + (targetY - startY) / 2;
+
+    const jumpedCell = document.getElementById(`cell-${jumpedX}-${jumpedY}`);
+    if (jumpedCell) {
+        const jumpedPlayer = jumpedCell.querySelector('.player');
+        if (jumpedPlayer && jumpedPlayer !== currentPlayer) {
+            return jumpedPlayer;
+        }
+    }
+
+    return null;
 }
 
 function updatePathLength() {
@@ -118,7 +166,6 @@ function calculateShortestPath(startCell, targetRow) {
     return [];
 }
 
-
 function getNeighbors(cell) {
     const [x, y] = cell.id.split('-').slice(1).map(Number);
     const neighbors = [];
@@ -131,36 +178,7 @@ function getNeighbors(cell) {
     return neighbors;
 }
 
-function checkBarriersBetween(cellId1, cellId2) {
-    const [x1, y1] = cellId1.split('-').slice(1).map(Number);
-    const [x2, y2] = cellId2.split('-').slice(1).map(Number);
-
-    if (x1 === x2) {
-        const minY = Math.min(y1, y2);
-        const maxY = Math.max(y1, y2);
-        for (let y = minY + 1; y < maxY; y += 2) {
-            const cell = document.getElementById(`cell-${x1}-${y}`);
-            if (cell.querySelector('.barrier') && cell) {
-                return true;
-            }
-        }
-    }
-
-    if (y1 === y2) {
-        const minX = Math.min(x1, x2);
-        const maxX = Math.max(x1, x2);
-        for (let x = minX + 1; x < maxX; x += 2) {
-            const cell = document.getElementById(`cell-${x}-${y1}`);
-            if (cell.querySelector('.barrier') && cell) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-function toggleBarrier(cell, cell2, cell3, isVertical) {
+function toggleBarrier(cell, cell2, cell3) {
     if (!cell.querySelector('.barrier') && (!cell2.querySelector('.barrier') || !cell2) && (!cell3.querySelector('.barrier') || !cell3)) {
         const barrier = document.createElement('div');
         barrier.className = 'barrier';
