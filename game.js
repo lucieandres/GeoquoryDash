@@ -1,6 +1,8 @@
 const board = document.getElementById('board');
 const player1 = createPlayer('player1', 'blue');
 const player2 = createPlayer('player2', 'red');
+let player1Path = [];
+let player2Path = [];
 let currentPlayer = player1;
 let gameActive = true;
 
@@ -65,9 +67,69 @@ function movePlayer(targetCell) {
             } else if (currentPlayer === player2 && targetX === 0) {
                 endGame('Le joueur 2 a gagné!');
             }
+
+            if (currentPlayer === player1) {
+                player1Path = calculateShortestPath(targetCell, 16);
+            } else {
+                player2Path = calculateShortestPath(targetCell, 0);
+            }
+
+            updatePathLength();
             turn();
         }
     }
+}
+
+function updatePathLength() {
+    const player1PathLengthElement = document.getElementById('player1PathLength');
+    const player2PathLengthElement = document.getElementById('player2PathLength');
+
+    player1PathLengthElement.innerText = `Le chemin du joueur 1 : ${player1Path.length}`;
+    player2PathLengthElement.innerText = `Le chemin du joueur 2 : ${player2Path.length}`;
+}
+
+function calculateShortestPath(startCell, targetRow) {
+    const queue = [{ cell: startCell, path: [] }];
+    const visited = new Set();
+
+    while (queue.length > 0) {
+        const { cell, path } = queue.shift();
+        const [x, y] = cell.id.split('-').slice(1).map(Number);
+
+        if (x === targetRow) {
+            return path;
+        }
+
+        const neighbors = getNeighbors(cell);
+        for (const neighbor of neighbors) {
+            const neighborId = neighbor.id;
+            const isBarrier = neighbor.querySelector('.barrier');
+
+            if (!visited.has(neighborId) && !(isBarrier && !path.includes(neighborId))) {
+                visited.add(neighborId);
+                if (neighbor.classList.contains('player-cell')) {
+                    queue.push({ cell: neighbor, path: [...path, neighborId] });
+                } else {
+                    queue.push({ cell: neighbor, path });
+                }
+            }
+        }
+    }
+
+    return [];
+}
+
+
+function getNeighbors(cell) {
+    const [x, y] = cell.id.split('-').slice(1).map(Number);
+    const neighbors = [];
+
+    if (x > 0) neighbors.push(document.getElementById(`cell-${x - 1}-${y}`));
+    if (x < 16) neighbors.push(document.getElementById(`cell-${x + 1}-${y}`));
+    if (y > 0) neighbors.push(document.getElementById(`cell-${x}-${y - 1}`));
+    if (y < 16) neighbors.push(document.getElementById(`cell-${x}-${y + 1}`));
+
+    return neighbors;
 }
 
 function checkBarriersBetween(cellId1, cellId2) {
@@ -114,9 +176,18 @@ function toggleBarrier(cell, cell2, cell3) {
             barrier3.className = 'barrier';
             cell3.appendChild(barrier3);
         }
+
+        if (currentPlayer === player1) {
+            player1Path = calculateShortestPath(player1Cell, 16);
+        } else {
+            player2Path = calculateShortestPath(player2Cell, 0);
+        }
+
+        updatePathLength();
         turn();
     }
 }
+
 
 function turn() {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
