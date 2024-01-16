@@ -59,7 +59,13 @@ function movePlayer(targetCell) {
     const barrierInBetween = checkBarriersBetween(playerCellId, targetCellId);
     const jumpedPlayer = getJumpedPlayer(playerCellId, targetCellId);
 
-    if ((((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) && !barrierInBetween)
+    let nextToPlayer = false;
+    const closePlayer = targetCell.querySelector('.player');
+    if (closePlayer && closePlayer !== currentPlayer) {
+        nextToPlayer = true;
+    }
+
+    if ((((Math.abs(targetX - x) === 2 && targetY === y) || (Math.abs(targetY - y) === 2 && targetX === x)) && !barrierInBetween && !nextToPlayer)
         || ((Math.abs(targetX - x) === 4 && targetY === y) && jumpedPlayer)) {
             targetCell.appendChild(currentPlayer);
             if (currentPlayer === player1 && targetX === 16) {
