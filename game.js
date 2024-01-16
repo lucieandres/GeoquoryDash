@@ -178,7 +178,7 @@ function getNeighbors(cell) {
     return neighbors;
 }
 
-function toggleBarrier(cell, cell2, cell3) {
+function toggleBarrier(cell, cell2, cell3, isVertical) {
     if (!cell.querySelector('.barrier') && (!cell2.querySelector('.barrier') || !cell2) && (!cell3.querySelector('.barrier') || !cell3)) {
         const barrier = document.createElement('div');
         barrier.className = 'barrier';
