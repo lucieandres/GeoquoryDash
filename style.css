@@ -8,14 +8,10 @@ body {
 
 .board {
     display: grid;
-    grid-template-columns: repeat(17, 38px);
-    grid-template-rows: repeat(17, 38px);
-    grid-gap: 1px;
+    grid-template: repeat(8, 38px 10px) 38px / repeat(8, 38px 10px) 38px;
 }
 
 .cell {
-    width: 38px;
-    height: 38px;
     border: 1px solid black;
     display: flex;
     justify-content: center;
