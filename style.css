@@ -4,19 +4,21 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-image: url('img/Image_fond_geometry_dash.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .board {
     display: grid;
-    grid-template-columns: repeat(17, 38px);
-    grid-template-rows: repeat(17, 38px);
-    grid-gap: 1px;
+    grid-template-columns: repeat(17, 35px);
+    grid-template-rows: repeat(17, 35px);
+    row-gap: 1px;
 }
 
 .cell {
-    width: 38px;
-    height: 38px;
-    border: 1px solid black;
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,16 +28,17 @@ body {
 .player {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
     position: absolute;
 }
 
 .player1 {
-    background-color: blue;
+    background-image: url('img/Skin002.png');
+    background-size: cover;
 }
 
 .player2 {
-    background-color: red;
+    background-image: url('img/Skin005.png');
+    background-size: cover;
 }
 
 .barrier {
@@ -47,7 +50,8 @@ body {
 }
 
 .cell.player-cell {
-    background-color: #c0e4fc;
+    background-image: url('img/RegularBlock01.png');
+    background-size: cover;
 }
 
 .cell.barrier-cell {
