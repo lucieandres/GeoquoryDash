@@ -3,22 +3,27 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
     margin: 0;
     background-image: url('img/Image_fond_geometry_dash.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .board {
     display: grid;
-    grid-template: repeat(8, 38px 10px) 38px / repeat(8, 38px 10px) 38px;
+    grid-template: repeat(8, 7vh 2vh) 7vh / repeat(8, 7vh 2vh) 7vh;
 }
 
 .cell {
-    border: 1px solid black;
-    grid-template-columns: repeat(17, 35px);
-    grid-template-rows: repeat(17, 35px);
-    row-gap: 1px;
+    border: 0.2vh solid black;
+    row-gap: 0.1vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,8 +31,8 @@ body {
 }
 
 .player {
-    width: 30px;
-    height: 30px;
+    width: 70%;
+    height: 70%;
     position: absolute;
 }
 
@@ -63,10 +68,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 20px;
+    font-size: 2vw;
     background-color: white;
-    padding: 20px;
-    border: 2px solid black;
+    padding: 2vh;
+    border: 0.2vh solid black;
     z-index: 1;
     display: none;
 }
