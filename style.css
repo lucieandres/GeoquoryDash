@@ -1,0 +1,91 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    background-image: url('img/Image_fond_geometry_dash.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.board {
+    display: grid;
+    grid-template: repeat(8, 7vh 2vh) 7vh / repeat(8, 7vh 2vh) 7vh;
+}
+
+.cell {
+    border: 0.2vh solid black;
+    row-gap: 0.2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.player {
+    width: 70%;
+    height: 70%;
+    position: absolute;
+}
+
+.player1 {
+    background-image: url('img/Skin002.png');
+    background-size: cover;
+}
+
+.player2 {
+    background-image: url('img/Skin005.png');
+    background-size: cover;
+}
+
+.barrier {
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    position: absolute;
+}
+
+.cell.player-cell {
+    background-image: url('img/RegularBlock01.png');
+    background-size: cover;
+}
+
+.cell.barrier-cell {
+    border: none;
+}
+
+#message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2vw;
+    background-color: white;
+    padding: 2vh;
+    border: 0.2vh solid black;
+    z-index: 1;
+    display: none;
+}
+
+#message.visible {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.infoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
